@@ -1,0 +1,682 @@
+{
+  "$schema": "alshfupoly-cardset-v0.2",
+  "version": "0.2.0-alpha",
+  "description": "Стартовый набор карт Алшаполии v0.2. TCG-формат slim: мана 1-5, колода 20, доска до 4 существ, бой ≤5 ходов.",
+
+  "format": {
+    "mana_min": 1,
+    "mana_max": 5,
+    "deck_size": 20,
+    "board_max_creatures": 4,
+    "battle_turns_max": 5,
+    "starting_hand": 3,
+    "hero_hp": 10
+  },
+
+  "factions": [
+    { "id": "knight",   "name": "Рыцари Зари",      "class": "Воин",       "color": "#4b88c2", "theme": "танки, лечение, бонус союзникам" },
+    { "id": "necro",    "name": "Орден Червя",      "class": "Некромант",  "color": "#9558d6", "theme": "призыв из сброса, проклятия, жертвы" },
+    { "id": "merchant", "name": "Вольное Купечество","class": "Торговец",   "color": "#e8b84c", "theme": "золото, добор карт, перекупка" },
+    { "id": "coven",    "name": "Высший Ковен",     "class": "Маг",        "color": "#7ab3e8", "theme": "заклинания, контроль доски, добор" }
+  ],
+
+  "rarities": [
+    { "id": "common",    "name": "Обычная",     "color": "#b8a778", "copies_per_starter_deck": 2, "expected_in_set": 1, "frequency_pool": "1 в 10" },
+    { "id": "rare",      "name": "Редкая",      "color": "#4b88c2", "copies_per_starter_deck": 1, "expected_in_set": 1, "frequency_pool": "1 в 25" },
+    { "id": "epic",      "name": "Эпическая",   "color": "#9558d6", "copies_per_starter_deck": 1, "expected_in_set": 1, "frequency_pool": "1 в 60" },
+    { "id": "legendary", "name": "Легендарная", "color": "#e8b84c", "copies_per_starter_deck": 1, "expected_in_set": 1, "frequency_pool": "1 в 200" }
+  ],
+
+  "keywords": {
+    "summoning_sickness": "Сонная болезнь — существо не может атаковать в ход, когда было разыграно (по умолчанию у всех).",
+    "charge":             "Стремительность — может атаковать в тот же ход, когда разыграно.",
+    "taunt":              "Защитник — противник обязан атаковать его прежде других существ и героя.",
+    "stealth":            "Незримость — не может быть выбран целью заклинания или атаки, пока сам не атакует.",
+    "divine_shield":      "Священное — первый полученный урон игнорируется, эффект сгорает.",
+    "lifesteal":          "Удар — урон, нанесённый этим существом, восстанавливает столько же HP вашему герою.",
+    "poison":             "Гниль — любое существо, получившее от него урон, уничтожается.",
+    "spell_immune":       "Эфирный — не получает урон от заклинаний.",
+    "battlecry":          "При появлении — эффект срабатывает, когда существо разыграно из руки.",
+    "deathrattle":        "Предсмертие — эффект срабатывает, когда существо уничтожено.",
+    "end_of_turn":        "Финал хода — эффект срабатывает в конце вашего хода.",
+    "once_per_turn":      "Раз в ход — активируемая способность, тратит ход существа."
+  },
+
+  "balance_formula": {
+    "comment": "Базовый стат-бюджет существа: mana * 2 + 1. Каждое ключевое слово или активная способность отнимает 1-2 единицы. Легендарные могут быть на +1 выше стат-бюджета.",
+    "mana_1": "стат-бюджет 3 (вэниль 2/1 или 1/2)",
+    "mana_2": "стат-бюджет 5 (вэниль 3/2 или 2/3)",
+    "mana_3": "стат-бюджет 7 (вэниль 4/3 или 3/4)",
+    "mana_4": "стат-бюджет 9 (вэниль 5/4 или 4/5)",
+    "mana_5": "стат-бюджет 11 (вэниль 5/6 или 6/5) — топовый слот"
+  },
+
+  "cards": [
+
+    { "id": "kn_acolyte",      "name": "Послушник Зари",       "name_en": "Acolyte of Dawn",
+      "type": "creature", "faction": "knight", "subtype": "Послушник", "rarity": "common",
+      "mana": 1, "atk": 1, "hp": 2, "keywords": ["battlecry"],
+      "ability": "При появлении: восстановите 1 HP своему герою.",
+      "flavor": "«Свет хранит даже самых малых.»",
+      "art_keywords": "young novice in pale gold robe with simple wooden lantern, gothic monastery archway, soft candle glow" },
+
+    { "id": "kn_pilgrim",      "name": "Пилигрим Зари",        "name_en": "Pilgrim of Dawn",
+      "type": "creature", "faction": "knight", "subtype": "Странник", "rarity": "common",
+      "mana": 2, "atk": 2, "hp": 3, "keywords": ["divine_shield"],
+      "ability": "Священное.",
+      "flavor": "«Прошёл сто дорог, ни одна не была пустой.»",
+      "art_keywords": "cloaked pilgrim with walking staff and golden halo, dusty road behind, dawn light on chestplate" },
+
+    { "id": "kn_shieldman",    "name": "Щитоносец",            "name_en": "Shieldbearer",
+      "type": "creature", "faction": "knight", "subtype": "Рыцарь", "rarity": "common",
+      "mana": 2, "atk": 1, "hp": 4, "keywords": ["taunt"],
+      "ability": "Защитник.",
+      "flavor": "«Щит тяжелее меча. И важнее.»",
+      "art_keywords": "stoic knight with massive kite shield blocking arrows, battered helm, blue and gold tabard" },
+
+    { "id": "kn_vanguard",     "name": "Рыцарь Авангарда",     "name_en": "Vanguard Knight",
+      "type": "creature", "faction": "knight", "subtype": "Рыцарь", "rarity": "common",
+      "mana": 3, "atk": 3, "hp": 3, "keywords": ["taunt"],
+      "ability": "Защитник.",
+      "flavor": "«Первый в строю. Последний под землёй.»",
+      "art_keywords": "knight in full plate with longsword raised, ruined battlefield, golden lion crest on shield" },
+
+    { "id": "kn_chaplain",     "name": "Капеллан",             "name_en": "Field Chaplain",
+      "type": "creature", "faction": "knight", "subtype": "Жрец", "rarity": "common",
+      "mana": 3, "atk": 2, "hp": 4, "keywords": ["battlecry"],
+      "ability": "При появлении: восстановите 2 HP союзному существу или своему герою.",
+      "flavor": "«Раны заживают. Воспоминания — нет.»",
+      "art_keywords": "warrior priest in golden vestments with mace and chalice, healing light in palm, war banner behind" },
+
+    { "id": "kn_bannerman",    "name": "Знаменосец",           "name_en": "Standard Bearer",
+      "type": "creature", "faction": "knight", "subtype": "Рыцарь", "rarity": "common",
+      "mana": 3, "atk": 2, "hp": 3, "keywords": [],
+      "ability": "Другие ваши существа получают +1 ATK, пока он жив.",
+      "flavor": "«Знамя — это причина встать.»",
+      "art_keywords": "knight holding torn golden battle banner aloft, wind blowing, soldiers rallying behind" },
+
+    { "id": "kn_paladin",      "name": "Паладин Восхода",      "name_en": "Paladin of Sunrise",
+      "type": "creature", "faction": "knight", "subtype": "Паладин", "rarity": "rare",
+      "mana": 4, "atk": 4, "hp": 4, "keywords": ["divine_shield", "taunt"],
+      "ability": "Священное · Защитник.",
+      "flavor": "«Я несу свет. И того, кто его потушит — мечом.»",
+      "art_keywords": "armored paladin with glowing two-handed sword, golden divine aura, kneeling on broken tomb" },
+
+    { "id": "kn_healer",       "name": "Целительница Лазури",  "name_en": "Azure Healer",
+      "type": "creature", "faction": "knight", "subtype": "Жрица", "rarity": "rare",
+      "mana": 3, "atk": 2, "hp": 3, "keywords": ["once_per_turn"],
+      "ability": "Раз в ход: восстановите 2 HP союзному существу или своему герою.",
+      "flavor": "«Каждая капля крови помнит, чьей она была.»",
+      "art_keywords": "young female cleric in azure-and-gold robes, glowing palms, surrounded by floating glyphs" },
+
+    { "id": "kn_archstrateg",  "name": "Архистратиг",          "name_en": "Archstrategos",
+      "type": "creature", "faction": "knight", "subtype": "Полководец", "rarity": "epic",
+      "mana": 5, "atk": 4, "hp": 6, "keywords": ["taunt", "end_of_turn"],
+      "ability": "Защитник. В конце хода: +1/+1 случайному другому союзному существу.",
+      "flavor": "«Я не выиграл ни одной битвы. Я выиграл войну.»",
+      "art_keywords": "grizzled veteran general in ornate gold-and-azure plate, scarred face, battle map in hand, war room ruins" },
+
+    { "id": "kn_aldrich",      "name": "Сир Альдрих, Меч Зари","name_en": "Sir Aldrich, Sword of Dawn",
+      "type": "creature", "faction": "knight", "subtype": "Легенда", "rarity": "legendary",
+      "mana": 5, "atk": 5, "hp": 5, "keywords": ["divine_shield", "charge", "deathrattle"],
+      "ability": "Священное · Стремительность. Предсмертие: воскресает в начале вашего следующего хода с 1 HP.",
+      "flavor": "«Он умер шесть раз. На седьмой ему запретили.»",
+      "art_keywords": "legendary knight with brilliant golden two-handed sword mid-swing, holy fire trails behind blade, broken army of undead at feet" },
+
+    { "id": "nc_servant",      "name": "Костяной Слуга",       "name_en": "Bone Servant",
+      "type": "creature", "faction": "necro", "subtype": "Нежить", "rarity": "common",
+      "mana": 1, "atk": 1, "hp": 1, "keywords": ["deathrattle"],
+      "ability": "Предсмертие: возьмите 1 карту.",
+      "flavor": "«Служит. Умирает. Помнит, что умер. Снова служит.»",
+      "art_keywords": "small skeletal servant carrying a tray of bones, hollow eye sockets, tattered shroud, crypt corridor" },
+
+    { "id": "nc_skel",         "name": "Скелет-копейщик",      "name_en": "Skeleton Spearman",
+      "type": "creature", "faction": "necro", "subtype": "Нежить", "rarity": "common",
+      "mana": 2, "atk": 2, "hp": 2, "keywords": [],
+      "ability": "(вэниль)",
+      "flavor": "«Когда смерть отпускает, не все умеют идти.»",
+      "art_keywords": "skeleton warrior with rusted spear and broken helm, purple necromantic glow in eye sockets" },
+
+    { "id": "nc_zombie",       "name": "Зомби-рекрут",         "name_en": "Zombie Recruit",
+      "type": "creature", "faction": "necro", "subtype": "Нежить", "rarity": "common",
+      "mana": 2, "atk": 1, "hp": 3, "keywords": ["taunt"],
+      "ability": "Защитник.",
+      "flavor": "«Гнилое мясо тоже стена.»",
+      "art_keywords": "bloated rotting undead in ragged armor, arms outstretched, sickly green tint, swamp mist" },
+
+    { "id": "nc_rot",          "name": "Гниль Кладбища",       "name_en": "Graveyard Rot",
+      "type": "creature", "faction": "necro", "subtype": "Чума", "rarity": "common",
+      "mana": 2, "atk": 2, "hp": 2, "keywords": ["deathrattle"],
+      "ability": "Предсмертие: +1/+1 случайному другому союзному существу.",
+      "flavor": "«Один разлагается, другой растёт.»",
+      "art_keywords": "writhing mass of black ichor and bone fragments, fungi blooms on grave stones" },
+
+    { "id": "nc_summoner",     "name": "Призыватель Тлена",    "name_en": "Decay Summoner",
+      "type": "creature", "faction": "necro", "subtype": "Маг", "rarity": "common",
+      "mana": 3, "atk": 2, "hp": 3, "keywords": ["battlecry"],
+      "ability": "При появлении: призовите Скелета 1/1 (жетон).",
+      "flavor": "«Кладбище — это просто армия в режиме ожидания.»",
+      "art_keywords": "hooded necromancer with skull staff, two ghostly skeletons rising from broken earth, purple mist" },
+
+    { "id": "nc_boneweaver",   "name": "Костеплёт",            "name_en": "Boneweaver",
+      "type": "creature", "faction": "necro", "subtype": "Нежить", "rarity": "common",
+      "mana": 3, "atk": 3, "hp": 2, "keywords": ["battlecry"],
+      "ability": "При появлении: нанесите 1 урон герою противника.",
+      "flavor": "«Он плетёт. Из костей. Из тех, кто рядом.»",
+      "art_keywords": "skeletal mage weaving bone threads in air like a loom, body of half-formed monster behind" },
+
+    { "id": "nc_reaper",       "name": "Жнец из Костницы",     "name_en": "Ossuary Reaper",
+      "type": "creature", "faction": "necro", "subtype": "Жнец", "rarity": "rare",
+      "mana": 3, "atk": 3, "hp": 3, "keywords": ["lifesteal"],
+      "ability": "Удар (восстановление герою на нанесённый урон).",
+      "flavor": "«Не косит. Собирает.»",
+      "art_keywords": "tall hooded reaper with curved scythe glowing dark purple, skull face under hood, bones at feet" },
+
+    { "id": "nc_plague",       "name": "Чумной Жрец",          "name_en": "Plague Priest",
+      "type": "creature", "faction": "necro", "subtype": "Жрец", "rarity": "rare",
+      "mana": 4, "atk": 3, "hp": 4, "keywords": ["battlecry"],
+      "ability": "При появлении: −1/−1 всем существам противника.",
+      "flavor": "«Лечение — это просто болезнь, идущая в другую сторону.»",
+      "art_keywords": "plague priest in beak mask and ragged purple robes, pouring sickly liquid from chalice, swirling flies" },
+
+    { "id": "nc_chamber",      "name": "Чёрная Палата",        "name_en": "Black Chamber",
+      "type": "creature", "faction": "necro", "subtype": "Заклинатель", "rarity": "epic",
+      "mana": 4, "atk": 2, "hp": 5, "keywords": ["once_per_turn"],
+      "ability": "Раз в ход: проклясть существо противника (−1 ATK до конца партии, эффект складывается).",
+      "flavor": "«Тринадцать жрецов. Один голос.»",
+      "art_keywords": "thirteen hooded figures forming a perfect circle around a black altar, glowing runes on floor, candles" },
+
+    { "id": "nc_velekor",      "name": "Лич Велекор",          "name_en": "Lich Velekor",
+      "type": "creature", "faction": "necro", "subtype": "Легенда", "rarity": "legendary",
+      "mana": 5, "atk": 4, "hp": 6, "keywords": ["end_of_turn"],
+      "ability": "В конце хода: воскресите случайное существо из вашего сброса с 1 HP.",
+      "flavor": "«Король, которому надоело умирать.»",
+      "art_keywords": "ancient lich king with crown of black bones, robe of shadow, glowing purple eyes, throne of skulls" },
+
+    { "id": "mr_spy",          "name": "Шпион Гильдии",        "name_en": "Guild Spy",
+      "type": "creature", "faction": "merchant", "subtype": "Лазутчик", "rarity": "common",
+      "mana": 1, "atk": 1, "hp": 1, "keywords": ["stealth", "battlecry"],
+      "ability": "Незримость. При появлении: посмотрите верхнюю карту своей колоды.",
+      "flavor": "«Знаешь — значит, владеешь.»",
+      "art_keywords": "hooded scout in leather and dark cloak, looking over shoulder, silver dagger in belt, alley shadows" },
+
+    { "id": "mr_cabinboy",     "name": "Юнга Корабельный",     "name_en": "Cabin Boy",
+      "type": "creature", "faction": "merchant", "subtype": "Моряк", "rarity": "common",
+      "mana": 1, "atk": 2, "hp": 1, "keywords": [],
+      "ability": "(вэниль)",
+      "flavor": "«За солёный сухарь и пинок выживет любой.»",
+      "art_keywords": "scrappy young sailor with rope and dirty white shirt, holding short blade, ship rigging behind" },
+
+    { "id": "mr_merc",         "name": "Наёмник Базара",       "name_en": "Bazaar Mercenary",
+      "type": "creature", "faction": "merchant", "subtype": "Наёмник", "rarity": "common",
+      "mana": 2, "atk": 3, "hp": 2, "keywords": [],
+      "ability": "(вэниль)",
+      "flavor": "«Цена прежняя. Условия — обсудим.»",
+      "art_keywords": "scarred mercenary with curved scimitar, leather armor, gold earring, exotic bazaar awnings behind" },
+
+    { "id": "mr_smuggler",     "name": "Контрабандист",        "name_en": "Smuggler",
+      "type": "creature", "faction": "merchant", "subtype": "Лазутчик", "rarity": "common",
+      "mana": 2, "atk": 2, "hp": 2, "keywords": ["deathrattle"],
+      "ability": "Предсмертие: +20⚜ владельцу (через игровой банк).",
+      "flavor": "«Главное — успеть продать до того, как тебя продадут.»",
+      "art_keywords": "shifty smuggler with crate under cloak, gold coins falling from pocket, dock at night" },
+
+    { "id": "mr_alchemist",    "name": "Алхимик-аптекарь",     "name_en": "Apothecary",
+      "type": "creature", "faction": "merchant", "subtype": "Учёный", "rarity": "common",
+      "mana": 3, "atk": 2, "hp": 3, "keywords": ["battlecry"],
+      "ability": "При появлении: возьмите 1 карту.",
+      "flavor": "«Если флакон чёрный — это лекарство. Если красный — тоже.»",
+      "art_keywords": "bent old apothecary with leather apron and goggles, shelves of glowing potions, smoke from beaker" },
+
+    { "id": "mr_caravan",      "name": "Караванщик",           "name_en": "Caravan Master",
+      "type": "creature", "faction": "merchant", "subtype": "Торговец", "rarity": "common",
+      "mana": 3, "atk": 3, "hp": 3, "keywords": ["end_of_turn"],
+      "ability": "В конце хода: +10⚜ владельцу за каждую вашу собственность (макс. +30⚜).",
+      "flavor": "«Дорога — это деньги, идущие пешком.»",
+      "art_keywords": "burly merchant with whip and ledger, two pack mules with crates, dusty trade road, sunset" },
+
+    { "id": "mr_hound",        "name": "Гончая Гильдии",       "name_en": "Guild Hound",
+      "type": "creature", "faction": "merchant", "subtype": "Зверь", "rarity": "rare",
+      "mana": 3, "atk": 3, "hp": 2, "keywords": ["charge"],
+      "ability": "Стремительность.",
+      "flavor": "«Долг догоняет всегда.»",
+      "art_keywords": "lean black hunting dog with gold spiked collar, fangs bared, racing through smoke" },
+
+    { "id": "mr_changer",      "name": "Меняла Чёрного Базара","name_en": "Black Bazaar Moneychanger",
+      "type": "creature", "faction": "merchant", "subtype": "Торговец", "rarity": "rare",
+      "mana": 4, "atk": 3, "hp": 4, "keywords": ["once_per_turn"],
+      "ability": "Раз в ход: заплатите 30⚜ → возьмите 1 карту.",
+      "flavor": "«Любой ответ — за наличные.»",
+      "art_keywords": "fat moneychanger at stall with scales, piles of coins, holding gold tooth in pliers, market torchlight" },
+
+    { "id": "mr_baron",        "name": "Барон Купечества",     "name_en": "Merchant Baron",
+      "type": "creature", "faction": "merchant", "subtype": "Аристократ", "rarity": "epic",
+      "mana": 4, "atk": 3, "hp": 4, "keywords": ["battlecry"],
+      "ability": "При появлении: возьмите 2 карты. Противник берёт 1 карту.",
+      "flavor": "«Я делюсь. С теми, кто потом отдаст вдвое.»",
+      "art_keywords": "elegant aristocrat in velvet and gold chains, sipping wine, signing parchment, vaulted hall" },
+
+    { "id": "mr_archon",       "name": "Архонт Гильдии",       "name_en": "Guild Archon",
+      "type": "creature", "faction": "merchant", "subtype": "Легенда", "rarity": "legendary",
+      "mana": 5, "atk": 4, "hp": 5, "keywords": ["battlecry"],
+      "ability": "При появлении: возьмите по 1 карте за каждую вашу собственность (макс. 3).",
+      "flavor": "«Все вокзалы. Все порты. Все весы.»",
+      "art_keywords": "regal merchant archon on platform overseeing port, golden cloak, three masks on chains, crown of coins" },
+
+    { "id": "ch_raven",        "name": "Рунический Ворон",     "name_en": "Runic Raven",
+      "type": "creature", "faction": "coven", "subtype": "Фамильяр", "rarity": "common",
+      "mana": 1, "atk": 1, "hp": 2, "keywords": ["battlecry"],
+      "ability": "При появлении: возьмите 1 карту.",
+      "flavor": "«Я вижу всё, чего ты не видишь. Из вредности.»",
+      "art_keywords": "raven with glowing blue runes on feathers, perched on grimoire, single eye glowing arcane" },
+
+    { "id": "ch_apprentice",   "name": "Ученик Архимага",      "name_en": "Archmage Apprentice",
+      "type": "creature", "faction": "coven", "subtype": "Маг", "rarity": "common",
+      "mana": 2, "atk": 1, "hp": 3, "keywords": [],
+      "ability": "Когда вы играете заклинание: это существо получает +1 ATK до конца хода.",
+      "flavor": "«Я только учусь. На вас.»",
+      "art_keywords": "young apprentice mage in blue robes too big, glowing book in hands, sparks of magic in air" },
+
+    { "id": "ch_warden",       "name": "Стражник Башни",       "name_en": "Tower Warden",
+      "type": "creature", "faction": "coven", "subtype": "Конструкт", "rarity": "common",
+      "mana": 2, "atk": 1, "hp": 4, "keywords": ["taunt"],
+      "ability": "Защитник.",
+      "flavor": "«Сделан, чтобы охранять. Не помнит, что.»",
+      "art_keywords": "stone golem warden with blue arcane runes glowing in chest, halberd, tower archway" },
+
+    { "id": "ch_summoner",     "name": "Призыватель Стихий",   "name_en": "Elemental Summoner",
+      "type": "creature", "faction": "coven", "subtype": "Маг", "rarity": "common",
+      "mana": 3, "atk": 2, "hp": 3, "keywords": ["battlecry"],
+      "ability": "При появлении: нанесите 1 урон любой цели.",
+      "flavor": "«Каждый элемент знает своё имя. И обижается, если перепутать.»",
+      "art_keywords": "mage with four small swirling elemental orbs around hands, fire water wind earth, robe of azure" },
+
+    { "id": "ch_golem",        "name": "Эфирный Голем",        "name_en": "Aether Golem",
+      "type": "creature", "faction": "coven", "subtype": "Конструкт", "rarity": "common",
+      "mana": 3, "atk": 3, "hp": 4, "keywords": ["spell_immune"],
+      "ability": "Эфирный — не получает урон от заклинаний.",
+      "flavor": "«Состоит из того, что между мирами.»",
+      "art_keywords": "translucent crystalline golem floating, refracting blue arcane energy, ethereal smoke around" },
+
+    { "id": "ch_crystal",      "name": "Хранитель Кристаллов", "name_en": "Crystal Warden",
+      "type": "creature", "faction": "coven", "subtype": "Маг", "rarity": "common",
+      "mana": 3, "atk": 2, "hp": 4, "keywords": ["battlecry"],
+      "ability": "При появлении: следующее ваше заклинание в этом бою стоит на 2 меньше (мин 0).",
+      "flavor": "«Кристалл помнит. Маг — нет.»",
+      "art_keywords": "robed mage holding glowing geometric blue crystal, beams of light from facets, dark sanctum" },
+
+    { "id": "ch_battlemage",   "name": "Боевой Маг",           "name_en": "Battle Mage",
+      "type": "creature", "faction": "coven", "subtype": "Маг", "rarity": "rare",
+      "mana": 3, "atk": 3, "hp": 3, "keywords": ["battlecry"],
+      "ability": "При появлении: нанесите 2 урона любой цели.",
+      "flavor": "«Я заклинание. Просто хожу пешком.»",
+      "art_keywords": "armored battle-mage with staff topped by lightning sphere, blue lightning crackling around" },
+
+    { "id": "ch_owl",          "name": "Сова Архимага",        "name_en": "Archmage's Owl",
+      "type": "creature", "faction": "coven", "subtype": "Фамильяр", "rarity": "rare",
+      "mana": 4, "atk": 3, "hp": 3, "keywords": [],
+      "ability": "Ваши заклинания стоят на 1 меньше (мин 0).",
+      "flavor": "«Знает все имена. Произносит шёпотом.»",
+      "art_keywords": "majestic horned owl with blue arcane glow in eyes, perched on stack of grimoires, candle flame" },
+
+    { "id": "ch_avatar",       "name": "Воплощение Маны",      "name_en": "Avatar of Mana",
+      "type": "creature", "faction": "coven", "subtype": "Стихия", "rarity": "epic",
+      "mana": 5, "atk": 4, "hp": 4, "keywords": [],
+      "ability": "Получает +1/+1 за каждое заклинание, сыгранное вами в этой партии.",
+      "flavor": "«Я — то, чем стало волшебство, когда некому было его слушать.»",
+      "art_keywords": "humanoid figure made entirely of swirling blue mana, glowing veins, geometric arcane patterns" },
+
+    { "id": "ch_selestria",    "name": "Архимаг Селестрия",    "name_en": "Archmage Selestria",
+      "type": "creature", "faction": "coven", "subtype": "Легенда", "rarity": "legendary",
+      "mana": 5, "atk": 4, "hp": 5, "keywords": ["battlecry", "once_per_turn"],
+      "ability": "При появлении: возьмите 2 карты. Раз в ход: повторите эффект последнего сыгранного вами заклинания.",
+      "flavor": "«Сила не в том, чтобы знать. В том, чтобы помнить.»",
+      "art_keywords": "elegant elder archmage in long silver-azure robes, floating ankh of stars, glowing third eye, observatory of constellations" },
+
+    { "id": "kn_sp_rays",      "name": "Лучи Зари",            "name_en": "Rays of Dawn",
+      "type": "spell", "faction": "knight", "rarity": "common",
+      "mana": 2,
+      "ability": "Восстановите 4 HP союзному существу или своему герою.",
+      "flavor": "«Каждый луч помнит, кем был, прежде чем стать болью.»",
+      "art_keywords": "golden divine light beams piercing through gothic stone window, ascending dust motes, holy radiance" },
+
+    { "id": "kn_sp_strike",    "name": "Священный Удар",       "name_en": "Sacred Strike",
+      "type": "spell", "faction": "knight", "rarity": "common",
+      "mana": 2,
+      "ability": "Нанесите 3 урона существу. Если цель — Нежить, нанесите +2 урона.",
+      "flavor": "«Не я бью. Свет бьёт.»",
+      "art_keywords": "blazing golden sword strike mid-arc, white-hot blade, target shattering into ash" },
+
+    { "id": "kn_sp_seal",      "name": "Печать Защиты",        "name_en": "Seal of Warding",
+      "type": "spell", "faction": "knight", "rarity": "rare",
+      "mana": 3,
+      "ability": "Союзное существо получает +0/+3 и Защитник.",
+      "flavor": "«Печать стоит. Пока кто-то её помнит.»",
+      "art_keywords": "glowing golden geometric sigil floating over a knight's chest, shield of light enveloping body" },
+
+    { "id": "kn_sp_dawn",      "name": "Свет Восхода",         "name_en": "Light of Sunrise",
+      "type": "spell", "faction": "knight", "rarity": "epic",
+      "mana": 4,
+      "ability": "Все ваши существа получают +1/+1.",
+      "flavor": "«Заря не выбирает, кого согреть.»",
+      "art_keywords": "sunburst over an army of knights, every figure haloed in golden light, banners snapping in wind" },
+
+    { "id": "nc_sp_curse",     "name": "Проклятье",            "name_en": "Curse",
+      "type": "spell", "faction": "necro", "rarity": "common",
+      "mana": 1,
+      "ability": "Существо противника: −2 ATK до конца хода.",
+      "flavor": "«Слово. Имя. Молчание.»",
+      "art_keywords": "purple necrotic energy curling around a victim's throat, hex sigil burning on forehead" },
+
+    { "id": "nc_sp_raise",     "name": "Поднять Падшего",      "name_en": "Raise the Fallen",
+      "type": "spell", "faction": "necro", "rarity": "common",
+      "mana": 2,
+      "ability": "Призвать случайное существо ценой ≤2 из вашего сброса.",
+      "flavor": "«Они не закончили. Вы тоже.»",
+      "art_keywords": "skeletal hand rising from grave dirt amid scattered bones, purple necromantic glow" },
+
+    { "id": "nc_sp_bones",     "name": "Ливень Костей",        "name_en": "Bone Rain",
+      "type": "spell", "faction": "necro", "rarity": "rare",
+      "mana": 3,
+      "ability": "Нанесите 2 урона всем существам противника.",
+      "flavor": "«Дождь шёл костями. Без перерыва.»",
+      "art_keywords": "rain of bones and skull fragments falling from grey sky, battlefield of impaled enemies" },
+
+    { "id": "nc_sp_overlord",  "name": "Зов Властелина",       "name_en": "Call of the Overlord",
+      "type": "spell", "faction": "necro", "rarity": "epic",
+      "mana": 5,
+      "ability": "Призовите Стража 4/4 (нежить-жетон). Ваш герой: −3 HP.",
+      "flavor": "«Хозяин слышит. И приходит.»",
+      "art_keywords": "huge skeletal warlord emerging from purple portal, surrounded by sacrificed cultists, blood pooling" },
+
+    { "id": "mr_sp_score",     "name": "Куш",                  "name_en": "The Score",
+      "type": "spell", "faction": "merchant", "rarity": "common",
+      "mana": 1,
+      "ability": "+40⚜.",
+      "flavor": "«Я даже не знал, что оно там лежит. Но я знал, что что-то лежит.»",
+      "art_keywords": "pile of gold coins spilling from torn leather sack, single ruby glinting on top" },
+
+    { "id": "mr_sp_trade",     "name": "Скупой Торг",          "name_en": "Hard Trade",
+      "type": "spell", "faction": "merchant", "rarity": "common",
+      "mana": 2,
+      "ability": "Заплатите 30⚜ → возьмите 2 карты.",
+      "flavor": "«Знание стоит больше. Всегда.»",
+      "art_keywords": "two hands exchanging coin pouch and scroll over stone table, candle wax dripping" },
+
+    { "id": "mr_sp_bribe",     "name": "Подкуп",               "name_en": "Bribe",
+      "type": "spell", "faction": "merchant", "rarity": "rare",
+      "mana": 3,
+      "ability": "Возьмите под контроль существо противника с ATK ≤ 2 до конца хода.",
+      "flavor": "«У каждого есть цена. И у тебя.»",
+      "art_keywords": "hand sliding gold coin into a turning soldier's gauntlet, smirk under helm" },
+
+    { "id": "mr_sp_buyout",    "name": "Откуп Контракта",      "name_en": "Buy Out the Contract",
+      "type": "spell", "faction": "merchant", "rarity": "epic",
+      "mana": 4,
+      "ability": "Уничтожьте существо. Его владелец получает 30⚜.",
+      "flavor": "«Это не убийство. Это разрыв сделки.»",
+      "art_keywords": "torn contract burning over a kneeling figure, golden coins paid to a black-cloaked broker" },
+
+    { "id": "ch_sp_bolt",      "name": "Молния",               "name_en": "Bolt",
+      "type": "spell", "faction": "coven", "rarity": "common",
+      "mana": 1,
+      "ability": "Нанесите 2 урона любой цели.",
+      "flavor": "«Самая короткая лекция в академии.»",
+      "art_keywords": "bright blue lightning bolt striking down, hand summoning it with crackling fingertips" },
+
+    { "id": "ch_sp_blast",     "name": "Эфирный Взрыв",        "name_en": "Aether Blast",
+      "type": "spell", "faction": "coven", "rarity": "common",
+      "mana": 3,
+      "ability": "Нанесите 4 урона существу.",
+      "flavor": "«Это была дверь. Теперь это дыра.»",
+      "art_keywords": "concentric circles of pure arcane azure energy exploding outward, creature silhouette caught at center" },
+
+    { "id": "ch_sp_freeze",    "name": "Заморозка",            "name_en": "Freeze",
+      "type": "spell", "faction": "coven", "rarity": "rare",
+      "mana": 2,
+      "ability": "Существо противника не атакует в свой следующий ход.",
+      "flavor": "«Тишина — тоже заклинание.»",
+      "art_keywords": "creature encased in jagged blue ice crystals, frost spreading on ground around it" },
+
+    { "id": "ch_sp_meteor",    "name": "Метеор",               "name_en": "Meteor",
+      "type": "spell", "faction": "coven", "rarity": "epic",
+      "mana": 5,
+      "ability": "Нанесите 5 урона существу и 2 урона соседним с ним существам.",
+      "flavor": "«Сегодня. Из ниоткуда. Прямо сюда.»",
+      "art_keywords": "massive flaming blue-violet meteor smashing into the battlefield, shockwave and debris flying" },
+
+    { "id": "qst_caravan",     "name": "Заброшенный Обоз",     "name_en": "The Abandoned Caravan",
+      "type": "quest", "rarity": "common",
+      "setup": "Ты находишь обоз на тракте. Колёса разбиты, люди мертвы. Один торговец ещё дышит.",
+      "choices": [
+        { "label": "Ограбить",      "effect": "+80⚜. −2 HP (умирающий тебя проклял)." },
+        { "label": "Помочь",        "effect": "+1 XP. Бросок d6: 5-6 → возьми случайного 2-мана существа в руку." },
+        { "label": "Сжечь обоз",    "effect": "+20⚜ страховки. Твоя следующая клетка-Рынок стоит ×2." }
+      ],
+      "art_keywords": "abandoned merchant caravan on misty forest road, broken wheels, scattered crates, raven on corpse" },
+
+    { "id": "qst_pilgrim",     "name": "Слепой Пилигрим",      "name_en": "The Blind Pilgrim",
+      "type": "quest", "rarity": "common",
+      "setup": "Слепой старик в лохмотьях просит проводить его до ближайшего святилища.",
+      "choices": [
+        { "label": "Проводить",     "effect": "+1 XP. Переместись на ближайшую клетку Святилища, восстанови HP до максимума." },
+        { "label": "Обокрасть",     "effect": "+30⚜. Старик оказался переодетым жрецом — −2 HP, проклятие на 1 ход (ATK = 1)." },
+        { "label": "Игнорировать",  "effect": "Ничего." }
+      ],
+      "art_keywords": "elderly blind pilgrim with milky eyes and walking staff, ragged cloak, alone on a foggy road" },
+
+    { "id": "qst_well",        "name": "Голос из Колодца",     "name_en": "Voice From the Well",
+      "type": "quest", "rarity": "common",
+      "setup": "Из заброшенного колодца зовут на помощь. Голос детский.",
+      "choices": [
+        { "label": "Спуститься",     "effect": "Бросок d6: 1-3 → ловушка, −3 HP; 4-6 → +60⚜ и случайная rare карта." },
+        { "label": "Бросить верёвку","effect": "Бросок d6: 1-3 → +20⚜; 4-6 → бой со Стражем 3/3, 3 хода." },
+        { "label": "Засыпать",       "effect": "Получи карту «Скрыл Свидетеля» (в любой момент скинь, чтобы отменить чужой бросок 2d6)." }
+      ],
+      "art_keywords": "old stone well in moonlight, small child's hand reaching from darkness inside, ivy overgrowth" },
+
+    { "id": "qst_usurer",      "name": "Сделка с Ростовщиком", "name_en": "Deal with the Usurer",
+      "type": "quest", "rarity": "common",
+      "setup": "Гном-ростовщик предлагает кредит.",
+      "choices": [
+        { "label": "Взять 200⚜ под 20%", "effect": "+200⚜ сейчас. Через 4 хода −240⚜." },
+        { "label": "Заложить собственность", "effect": "+100⚜ за каждую твою клетку. В течение 3 ходов с них не получаешь ренту." },
+        { "label": "Отказаться", "effect": "Ничего." }
+      ],
+      "art_keywords": "dwarf moneylender at a dark stall, gold scales, parchment contracts, ink and quill, deep red velvet" },
+
+    { "id": "qst_shade",       "name": "Раненая Тень",         "name_en": "Wounded Shade",
+      "type": "quest", "rarity": "common",
+      "setup": "На дороге существо Тени, истекающее эфиром. Спасёшь — может станет союзником.",
+      "choices": [
+        { "label": "Спасти", "effect": "−2 HP. В следующем TCG-бою бесплатный союзник: Тень 2/2 со Стремительностью." },
+        { "label": "Добить", "effect": "+20⚜ (продал эфир). Маги тебя проклинают — следующая клетка-Аркана стоит ×2." },
+        { "label": "Связать и продать", "effect": "+50⚜ контрабандистам. На следующей клетке-Луне получишь −1 HP." }
+      ],
+      "art_keywords": "ethereal shadow creature bleeding silver mist, lying on road, partially transparent, sad glowing eyes" },
+
+    { "id": "qst_bonecaravan", "name": "Костяной Караван",     "name_en": "The Bone Caravan",
+      "type": "quest", "rarity": "common",
+      "setup": "Караван нежити идёт через лес. Возница без головы.",
+      "choices": [
+        { "label": "Спрятаться", "effect": "Ничего. Безопасно." },
+        { "label": "Атаковать", "effect": "TCG-бой 3 хода против отряда нежити. Победа: +120⚜." },
+        { "label": "Присоединиться", "effect": "−1 HP (метка нежити). Следующая клетка-Некрополь стоит ½." }
+      ],
+      "art_keywords": "wagon caravan driven by headless coachman, skeletons sitting in cart, lantern with purple flame" },
+
+    { "id": "qst_scroll",      "name": "Свиток в Башне",       "name_en": "Scroll in the Tower",
+      "type": "quest", "rarity": "rare",
+      "setup": "В руинах башни ты находишь свиток на древнем наречии.",
+      "choices": [
+        { "label": "Прочесть", "effect": "Бросок d6: 1-2 → проклят, −1 ATK в след. бою; 3-4 → ничего; 5-6 → тяни 1 epic spell." },
+        { "label": "Продать", "effect": "+80⚜." },
+        { "label": "Сжечь", "effect": "+1 XP. Безопасно." }
+      ],
+      "art_keywords": "ancient parchment scroll glowing with arcane runes, on broken table in ruined mage tower, dust motes" },
+
+    { "id": "qst_child",       "name": "Дитя Кладбища",        "name_en": "The Graveyard Child",
+      "type": "quest", "rarity": "rare",
+      "setup": "Ребёнок играет на могилах. Глаза горят холодным огнём.",
+      "choices": [
+        { "label": "Поговорить", "effect": "+1 XP. Ребёнок раскрывает спрятанное: +40⚜." },
+        { "label": "Уйти", "effect": "Ничего." },
+        { "label": "Развеять чарами", "effect": "−2 HP. Верни 1 случайную нежить-карту из своего сброса в руку." }
+      ],
+      "art_keywords": "small pale child sitting on tombstone, holding rag doll, eyes glowing cold blue, fog at feet" },
+
+    { "id": "qst_chapel",      "name": "Заколоченная Часовня", "name_en": "Boarded Chapel",
+      "type": "quest", "rarity": "common",
+      "setup": "Старая часовня закрыта на массивный замок. Изнутри что-то стучит.",
+      "choices": [
+        { "label": "Взломать", "effect": "+60⚜. +1 XP. −1 HP." },
+        { "label": "Помолиться", "effect": "Восстанови HP до максимума." },
+        { "label": "Подпереть и уйти", "effect": "Ничего." }
+      ],
+      "art_keywords": "abandoned gothic chapel with rotting wooden boards nailed across the door, faint glow inside" },
+
+    { "id": "qst_demon",       "name": "Сделка с Демоном",     "name_en": "Deal with a Demon",
+      "type": "quest", "rarity": "epic",
+      "setup": "На перекрёстке ждёт фигура в плаще. Предлагает «всё».",
+      "choices": [
+        { "label": "Золото", "effect": "+400⚜. Теряешь 1 случайную свою клетку (уходит в банк)." },
+        { "label": "Опыт", "effect": "+5 XP. Через 5 ходов −5 HP (без вариантов)." },
+        { "label": "Уровень", "effect": "+1 уровень мгновенно. Навсегда теряешь возможность лечить себя." },
+        { "label": "Отказаться", "effect": "+1 XP за мудрость." }
+      ],
+      "art_keywords": "hooded figure at midnight crossroads, glowing red eyes under hood, hand outstretched with deal" },
+
+    { "id": "qst_moon",        "name": "Лунный Странник",      "name_en": "Moon Wanderer",
+      "type": "quest", "rarity": "rare",
+      "setup": "Под Алой Луной идёт незнакомец и поёт.",
+      "choices": [
+        { "label": "Идти за ним", "effect": "Переместись на любую клетку-Луна. Восстанови ману в след. бою." },
+        { "label": "Спросить дорогу", "effect": "+1 XP. Узнай, что на ближайших 3 клетках перед тобой." },
+        { "label": "Атаковать", "effect": "Бой TCG со странником (4/4 со Стремительностью). Победа: легендарная Фортуна." }
+      ],
+      "art_keywords": "silhouette of robed wanderer walking under huge red moon, singing with mouth open, mist trailing" },
+
+    { "id": "qst_crown_act1",  "name": "Корона Алшаполии · Акт I", "name_en": "Crown of Alshfupolia · Act I",
+      "type": "quest", "rarity": "legendary",
+      "setup": "Древний хранитель открывает тебе путь к Короне. Это первая из четырёх печатей.",
+      "choices": [
+        { "label": "Принять", "effect": "Получи маркер «Хранитель Печати I». При следующем посещении Тронного Зала, Лунного Алтаря, Усыпальницы Королей или Башни Архимага → начинается Акт II." },
+        { "label": "Отказаться", "effect": "+1 XP. Карта возвращается в колоду." }
+      ],
+      "art_keywords": "ancient stone keeper presenting a glowing rusted crown on velvet cushion, broken throne room behind" },
+
+    { "id": "frt_purse",       "name": "Найденный Кошель",     "name_en": "Found Purse",
+      "type": "fortune", "tone": "good",
+      "effect": "+50⚜.",
+      "flavor": "«Кто-то уронил. Кто-то нашёл.»",
+      "art_keywords": "leather pouch of coins on cobblestone, single gold coin escaped, lantern light glint" },
+
+    { "id": "frt_ambush",      "name": "Засада Разбойников",   "name_en": "Bandit Ambush",
+      "type": "fortune", "tone": "bad",
+      "effect": "Выбери: −50⚜ ИЛИ TCG-бой 3 хода (Разбойник 3/3). Победа → +30⚜.",
+      "flavor": "«Лес был тихим. Это и было плохим знаком.»",
+      "art_keywords": "three masked bandits stepping out from forest mist with crossbows raised, dim torchlight" },
+
+    { "id": "frt_blessing",    "name": "Благословение Жреца",  "name_en": "Priest's Blessing",
+      "type": "fortune", "tone": "good",
+      "effect": "Восстанови HP до максимума. +1 мана в первый ход след. боя.",
+      "flavor": "«Не моя заслуга. Просто стоял рядом.»",
+      "art_keywords": "kindly old priest with raised hands releasing golden light onto figure, gothic shrine" },
+
+    { "id": "frt_witchcurse",  "name": "Проклятие Ведьмы",     "name_en": "Witch's Curse",
+      "type": "fortune", "tone": "bad",
+      "effect": "Все твои существа −1 ATK в следующем бою.",
+      "flavor": "«Она помнит. Они все помнят.»",
+      "art_keywords": "old hag witch pointing crooked finger, green hex sigil floating, raven on shoulder, twisted hut" },
+
+    { "id": "frt_trader",      "name": "Странный Торговец",    "name_en": "The Strange Trader",
+      "type": "fortune", "tone": "good",
+      "effect": "Можешь купить любую rare карту из набора за 80⚜.",
+      "flavor": "«Лица не вижу. Цены — кристальны.»",
+      "art_keywords": "cloaked merchant under hood with mismatched glowing wares laid on cloth, faint blue eyes" },
+
+    { "id": "frt_plague",      "name": "Чума",                 "name_en": "Plague",
+      "type": "fortune", "tone": "bad",
+      "effect": "Все игроки (включая тебя) теряют 2 HP.",
+      "flavor": "«Никого не пощадила. Самая честная.»",
+      "art_keywords": "wide shot of plague-stricken village, doors marked with red crosses, plague doctor walking street" },
+
+    { "id": "frt_fair",        "name": "Ярмарка",              "name_en": "Fair Day",
+      "type": "fortune", "tone": "neutral",
+      "effect": "Бросок d6: 1-2 → −20⚜; 3-4 → +20⚜; 5-6 → тяни карту существа.",
+      "flavor": "«Барды лгут. Гадалки тоже. Зато весело.»",
+      "art_keywords": "colorful medieval fair, jugglers, jester, food stalls under string of lanterns, twilight" },
+
+    { "id": "frt_darkpact",    "name": "Тёмный Договор",       "name_en": "Dark Pact",
+      "type": "fortune", "tone": "bad",
+      "effect": "+100⚜ сейчас. Через 5 ходов −150⚜.",
+      "flavor": "«Подписал. Не читал. Так все делают.»",
+      "art_keywords": "quill drawing blood signature on parchment, demonic seal at bottom glowing red, candle wax" },
+
+    { "id": "frt_moonlight",   "name": "Лунный Свет",          "name_en": "Moonlight",
+      "type": "fortune", "tone": "good",
+      "effect": "+1 XP.",
+      "flavor": "«Луна не учит. Просто стоит, и этого хватает.»",
+      "art_keywords": "soft silver moonlight pouring through trees onto figure looking up, peaceful nightscape" },
+
+    { "id": "frt_dreams",      "name": "Хорошие Сны",          "name_en": "Good Dreams",
+      "type": "fortune", "tone": "good",
+      "effect": "Восстанови HP до максимума.",
+      "flavor": "«Утром не помнишь. Но идёшь дальше.»",
+      "art_keywords": "figure sleeping by extinguished campfire, soft warm dawn light, peaceful expression" },
+
+    { "id": "frt_illomen",     "name": "Дурной Знак",          "name_en": "Ill Omen",
+      "type": "fortune", "tone": "bad",
+      "effect": "Следующий бросок 2d6 — бросаешь 1 кубиком.",
+      "flavor": "«Ворон. Слева. Кружит.»",
+      "art_keywords": "single black raven on weathered stone cross, looking directly at viewer with one red eye" },
+
+    { "id": "frt_foolsluck",   "name": "Удача Дурака",         "name_en": "Fool's Luck",
+      "type": "fortune", "tone": "good",
+      "effect": "Выбери: тяни 2 карты ИЛИ перебрось любой свой бросок 2d6 в этой партии (одноразово).",
+      "flavor": "«Самые везучие — те, кто не понял, что должны были умереть.»",
+      "art_keywords": "wide-grinning jester juggling skulls and gold coins, motley patchwork costume, lopsided hat" }
+  ],
+
+  "tokens": [
+    { "id": "tok_skeleton",   "name": "Скелет",   "type": "token", "faction": "necro",  "mana": 1, "atk": 1, "hp": 1, "ability": "Жетон. Не идёт в колоду.", "note": "Призывается nc_summoner" },
+    { "id": "tok_guardian",   "name": "Страж",    "type": "token", "faction": "necro",  "mana": 0, "atk": 4, "hp": 4, "ability": "Жетон. Не идёт в колоду.", "note": "Призывается nc_sp_overlord" },
+    { "id": "tok_shade",      "name": "Тень",     "type": "token", "faction": "neutral","mana": 0, "atk": 2, "hp": 2, "keywords": ["charge"], "ability": "Стремительность. Жетон.", "note": "Награда из qst_shade" }
+  ],
+
+  "starter_decks": {
+    "comment": "Готовая 20-карточная колода на каждую фракцию. Все ID карт прямого ссылочного типа. count = сколько копий взять.",
+    "knight": [
+      { "id": "kn_acolyte", "count": 2 }, { "id": "kn_pilgrim", "count": 2 }, { "id": "kn_shieldman", "count": 2 },
+      { "id": "kn_vanguard", "count": 2 }, { "id": "kn_chaplain", "count": 1 }, { "id": "kn_bannerman", "count": 1 },
+      { "id": "kn_paladin", "count": 1 }, { "id": "kn_healer", "count": 1 },
+      { "id": "kn_archstrateg", "count": 1 }, { "id": "kn_aldrich", "count": 1 },
+      { "id": "kn_sp_rays", "count": 2 }, { "id": "kn_sp_strike", "count": 2 },
+      { "id": "kn_sp_seal", "count": 1 }, { "id": "kn_sp_dawn", "count": 1 }
+    ],
+    "necro": [
+      { "id": "nc_servant", "count": 2 }, { "id": "nc_skel", "count": 2 }, { "id": "nc_zombie", "count": 2 },
+      { "id": "nc_rot", "count": 1 }, { "id": "nc_summoner", "count": 2 }, { "id": "nc_boneweaver", "count": 1 },
+      { "id": "nc_reaper", "count": 1 }, { "id": "nc_plague", "count": 1 },
+      { "id": "nc_chamber", "count": 1 }, { "id": "nc_velekor", "count": 1 },
+      { "id": "nc_sp_curse", "count": 2 }, { "id": "nc_sp_raise", "count": 2 },
+      { "id": "nc_sp_bones", "count": 1 }, { "id": "nc_sp_overlord", "count": 1 }
+    ],
+    "merchant": [
+      { "id": "mr_spy", "count": 2 }, { "id": "mr_cabinboy", "count": 2 }, { "id": "mr_merc", "count": 2 },
+      { "id": "mr_smuggler", "count": 1 }, { "id": "mr_alchemist", "count": 1 }, { "id": "mr_caravan", "count": 2 },
+      { "id": "mr_hound", "count": 1 }, { "id": "mr_changer", "count": 1 },
+      { "id": "mr_baron", "count": 1 }, { "id": "mr_archon", "count": 1 },
+      { "id": "mr_sp_score", "count": 2 }, { "id": "mr_sp_trade", "count": 2 },
+      { "id": "mr_sp_bribe", "count": 1 }, { "id": "mr_sp_buyout", "count": 1 }
+    ],
+    "coven": [
+      { "id": "ch_raven", "count": 2 }, { "id": "ch_apprentice", "count": 2 }, { "id": "ch_warden", "count": 2 },
+      { "id": "ch_summoner", "count": 2 }, { "id": "ch_golem", "count": 1 }, { "id": "ch_crystal", "count": 1 },
+      { "id": "ch_battlemage", "count": 1 }, { "id": "ch_owl", "count": 1 },
+      { "id": "ch_avatar", "count": 1 }, { "id": "ch_selestria", "count": 1 },
+      { "id": "ch_sp_bolt", "count": 2 }, { "id": "ch_sp_blast", "count": 2 },
+      { "id": "ch_sp_freeze", "count": 1 }, { "id": "ch_sp_meteor", "count": 1 }
+    ]
+  }
+}
