@@ -1,0 +1,18 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# logs
+*.log
+npm-debug.log*
+
+# build artifacts
+node_modules/
+dist/
+build/
+
+# design-canvas local state (per-user)
+.design-canvas.state.json

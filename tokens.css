@@ -1,0 +1,120 @@
+/* Alshfupoly — design tokens
+   16-bit Sega Mega Drive dark-fantasy aesthetic */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600;700&family=Jersey+15&family=Jersey+10&display=swap');
+
+:root {
+  /* core palette */
+  --ink: #0a0614;
+  --void: #0e0a1a;
+  --night: #1a1230;
+  --panel: #2a1f48;
+  --panel-2: #3d2d66;
+  --rim: #5b438f;
+  --rim-bright: #8466bd;
+
+  --gold: #e8b84c;
+  --gold-bright: #f7d96a;
+  --gold-dark: #8a6720;
+
+  --blood: #c8313a;
+  --blood-dark: #6b1820;
+  --blood-bright: #ff5c66;
+
+  --bone: #e8d9b0;
+  --bone-dim: #b8a778;
+  --bone-bright: #f5ebcc;
+
+  --arcane: #4b88c2;
+  --arcane-bright: #7ab3e8;
+  --arcane-dark: #1f3f6b;
+
+  --hex: #9558d6;
+  --hex-dark: #4a1f7a;
+
+  --toxic: #66b542;
+  --toxic-dark: #2e5a1c;
+
+  /* fonts */
+  --f-head: 'Press Start 2P', monospace;
+  --f-disp: 'Jersey 15', 'Jersey 10', monospace;
+  --f-body: 'Pixelify Sans', monospace;
+
+  /* rarity */
+  --r-common: #b8a778;
+  --r-rare: #4b88c2;
+  --r-epic: #9558d6;
+  --r-legendary: #e8b84c;
+}
+
+/* pixel rendering */
+.pix, .pix img, .pix svg, .pix canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+* { -webkit-font-smoothing: none; font-smooth: never; }
+
+/* chunky pixel border — uses double box-shadow to fake 4-corner pixels */
+.pixborder {
+  --bc: var(--rim);
+  --bg: var(--panel);
+  background: var(--bg);
+  box-shadow:
+    0 0 0 2px var(--ink),
+    inset 0 0 0 2px var(--bc),
+    inset 0 0 0 4px var(--ink);
+  position: relative;
+}
+.pixborder::before, .pixborder::after {
+  content: ''; position: absolute; width: 2px; height: 2px;
+  background: var(--ink); z-index: 2;
+}
+.pixborder::before { top: -2px; left: -2px; box-shadow: calc(100% + 2px) 0 var(--ink), 0 calc(100% + 2px) var(--ink), calc(100% + 2px) calc(100% + 2px) var(--ink); }
+.pixborder::after { display: none; }
+
+/* nested inner highlight (faux 16-bit beveling) */
+.pixbevel {
+  box-shadow:
+    inset 2px 2px 0 rgba(255,255,255,0.08),
+    inset -2px -2px 0 rgba(0,0,0,0.45);
+}
+
+/* dithered fill — checker 2x2 */
+.dither-a {
+  background-image: linear-gradient(45deg, currentColor 25%, transparent 25%, transparent 75%, currentColor 75%),
+                    linear-gradient(45deg, currentColor 25%, transparent 25%, transparent 75%, currentColor 75%);
+  background-size: 4px 4px;
+  background-position: 0 0, 2px 2px;
+}
+
+/* scanline overlay for nostalgia */
+.scanlines::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0 1px, transparent 1px 3px);
+  z-index: 9;
+  mix-blend-mode: multiply;
+}
+
+/* utility: striped placeholder for unmade illustrations */
+.illus-ph {
+  background:
+    repeating-linear-gradient(135deg, rgba(232,217,176,0.04) 0 6px, rgba(232,217,176,0.08) 6px 12px),
+    linear-gradient(180deg, var(--panel) 0%, var(--night) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--f-body); color: var(--bone-dim);
+  font-size: 10px; text-align: center; letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* gold rivets — for ornate borders */
+.rivets::after {
+  content: ''; position: absolute; inset: 4px; pointer-events: none;
+  background:
+    radial-gradient(circle at 0 0, var(--gold) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 100% 0, var(--gold) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 0 100%, var(--gold) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 100% 100%, var(--gold) 1.5px, transparent 1.5px);
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+}
+
+/* body */
+html, body { background: var(--ink); color: var(--bone); font-family: var(--f-body); margin: 0; }
+body { font-size: 14px; }
